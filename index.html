@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SquidTracker Nha Trang</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #0284c7;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 12px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        h2, h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn:disabled {
+            background-color: var(--border-color);
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px 12px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        .log-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .log-item:last-child {
+            border-bottom: none;
+        }
+
+        .photo-preview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 8px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: var(--border-color);
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>Геолокация и Сессия</h2>
+        <div class="form-group">
+            <button class="btn" id="btn-location" onclick="getLocation()">Зафиксировать координаты</button>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label>Широта</label>
+                <input type="text" id="lat" readonly placeholder="---">
+            </div>
+            <div class="form-group">
+                <label>Долгота</label>
+                <input type="text" id="lng" readonly placeholder="---">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Название локации / спота</label>
+            <input type="text" id="spot-name" placeholder="Например: Скалы Ан Вьен">
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Регистрация Поклевки / Улова</h2>
+        <form id="catch-form" onsubmit="saveCatch(event)">
+            <div class="row">
+                <div class="form-group">
+                    <label>Размер EGI</label>
+                    <select id="egi-size">
+                        <option value="2.0">2.0</option>
+                        <option value="2.5">2.5</option>
+                        <option value="3.0" selected>3.0</option>
+                        <option value="3.5">3.5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Тип заглубления</label>
+                    <select id="egi-type">
+                        <option value="Shallow">Shallow</option>
+                        <option value="Basic" selected>Basic</option>
+                        <option value="Deep">Deep</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Цвет / Свечение</label>
+                    <input type="text" id="egi-color" placeholder="Красный / Glow">
+                </div>
+                <div class="form-group">
+                    <label>Горизонт ловли</label>
+                    <select id="depth-layer">
+                        <option value="Поверхность">Поверхность</option>
+                        <option value="Толща">Толща</option>
+                        <option value="Дно" selected>Дно</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Длина мантии (см)</label>
+                    <input type="number" id="mantle-length" step="0.1" placeholder="15">
+                </div>
+                <div class="form-group">
+                    <label>Вес (г)</label>
+                    <input type="number" id="squid-weight" step="1" placeholder="250">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Фотография улова</label>
+                <input type="file" id="photo-input" accept="image/*" onchange="previewPhoto(event)">
+                <img id="photo-img" class="photo-preview" alt="Превью фото">
+            </div>
+
+            <button type="submit" class="btn">Сохранить запись</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Журнал активности (Локально)</h2>
+        <div id="logs-container">
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Записи отсутствуют</p>
+        </div>
+        <button class="btn" style="background-color: #dc2626; margin-top: 12px;" onclick="clearLogs()">Очистить журнал</button>
+    </div>
+</div>
+
+<script>
+    let currentPhotoBase64 = null;
+
+    function getLocation() {
+        const btn = document.getElementById('btn-location');
+        btn.disabled = true;
+        btn.innerText = 'Получение координат...';
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    document.getElementById('lat').value = position.coords.latitude.toFixed(6);
+                    document.getElementById('lng').value = position.coords.longitude.toFixed(6);
+                    btn.disabled = false;
+                    btn.innerText = 'Координаты обновлены';
+                },
+                (error) => {
+                    alert('Ошибка получения геолокации: ' + error.message);
+                    btn.disabled = false;
+                    btn.innerText = 'Зафиксировать координаты';
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        } else {
+            alert('Геолокация не поддерживается вашим браузером');
+            btn.disabled = false;
+            btn.innerText = 'Зафиксировать координаты';
+        }
+    }
+
+    function previewPhoto(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentPhotoBase64 = e.target.result;
+                const img = document.getElementById('photo-img');
+                img.src = currentPhotoBase64;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function saveCatch(event) {
+        event.preventDefault();
+
+        const catchData = {
+            id: Date.now(),
+            timestamp: new Date().toLocaleString('ru-RU'),
+            lat: document.getElementById('lat').value || 'Н/Д',
+            lng: document.getElementById('lng').value || 'Н/Д',
+            spot: document.getElementById('spot-name').value || 'Без названия',
+            egiSize: document.getElementById('egi-size').value,
+            egiType: document.getElementById('egi-type').value,
+            egiColor: document.getElementById('egi-color').value || 'Н/Д',
+            depthLayer: document.getElementById('depth-layer').value,
+            mantleLength: document.getElementById('mantle-length').value || '-',
+            weight: document.getElementById('squid-weight').value || '-',
+            photo: currentPhotoBase64
+        };
+
+        let logs = JSON.parse(localStorage.getItem('squid_tracker_logs') || '[]');
+        logs.unshift(catchData);
+        localStorage.setItem('squid_tracker_logs', JSON.stringify(logs));
+
+        document.getElementById('catch-form').reset();
+        document.getElementById('photo-img').style.display = 'none';
+        currentPhotoBase64 = null;
+
+        renderLogs();
+    }
+
+    function renderLogs() {
+        const container = document.getElementById('logs-container');
+        const logs = JSON.parse(localStorage.getItem('squid_tracker_logs') || '[]');
+
+        if (logs.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Записи отсутствуют</p>';
+            return;
+        }
+
+        container.innerHTML = logs.map(item => `
+            <div class="log-item">
+                <div><strong>${item.timestamp}</strong> — ${item.spot}</div>
+                <div style="color: var(--text-muted);">Координаты: ${item.lat}, ${item.lng}</div>
+                <div>EGI: ${item.egiSize} (${item.egiType}) | Цвет: ${item.egiColor} | Слой: ${item.depthLayer}</div>
+                <div>Мантия: ${item.mantleLength} см | Вес: ${item.weight} г</div>
+                ${item.photo ? `<img src="${item.photo}" style="max-width: 100%; max-height: 100px; margin-top: 6px; border-radius: 4px;">` : ''}
+            </div>
+        `).join('');
+    }
+
+    function clearLogs() {
+        if (confirm('Удалить все сохраненные записи из локального хранилища?')) {
+            localStorage.removeItem('squid_tracker_logs');
+            renderLogs();
+        }
+    }
+
+    window.onload = renderLogs;
+</script>
+</body>
+</html>
