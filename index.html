@@ -6,148 +6,372 @@
     <title>SquidTracker Nha Trang</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #0284c7;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
+            --bg: #07111f;
+            --bg-2: #0f172a;
+            --panel: rgba(15, 23, 42, 0.9);
+            --panel-strong: #111827;
+            --card: rgba(30, 41, 59, 0.8);
+            --card-alt: rgba(15, 23, 42, 0.8);
+            --muted: #94a3b8;
+            --text: #e2e8f0;
+            --text-soft: #cbd5e1;
+            --accent: #38bdf8;
+            --accent-strong: #0284c7;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --border: rgba(148, 163, 184, 0.2);
+            --shadow: 0 12px 28px rgba(2, 6, 23, 0.45);
+            --radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top, rgba(56, 189, 248, 0.15), transparent 30%),
+                linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 12px;
-            box-sizing: border-box;
+            padding: 18px;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 720px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 18px;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.92));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .title-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            font-size: 1.2rem;
         }
 
         h2, h3 {
-            margin-top: 0;
-            margin-bottom: 12px;
-            color: var(--text-main);
+            margin: 0;
+            color: var(--text);
+        }
+
+        .subtle {
+            color: var(--muted);
+            font-size: 0.85rem;
         }
 
         .btn {
-            background-color: var(--accent-color);
-            color: #ffffff;
+            appearance: none;
             border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-weight: 600;
+            border-radius: 12px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+            color: #fff;
+            padding: 12px 16px;
+            font-weight: 700;
             cursor: pointer;
+            transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
             width: 100%;
-            box-sizing: border-box;
+            box-shadow: 0 8px 18px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn:hover:not(:disabled) {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .btn:disabled {
-            background-color: var(--border-color);
+            background: linear-gradient(180deg, #475569, #334155);
             cursor: not-allowed;
+            opacity: 0.8;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.18), rgba(51, 65, 85, 0.35));
+            color: var(--text);
+            border: 1px solid var(--border);
+            box-shadow: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(180deg, #ef4444, #b91c1c);
+            box-shadow: 0 8px 18px rgba(185, 28, 28, 0.2);
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         label {
             display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 8px 12px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 10px 12px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.98rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: rgba(56, 189, 248, 0.9);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(148, 163, 184, 0.9);
         }
 
         .row {
             display: flex;
-            gap: 8px;
+            gap: 12px;
         }
 
-        .row .form-group {
+        .row > .form-group {
             flex: 1;
+            min-width: 0;
+        }
+
+        .status-box {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid var(--border);
+            color: var(--text-soft);
+            font-size: 0.88rem;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-box.success {
+            border-color: rgba(52, 211, 153, 0.5);
+            background: rgba(16, 185, 129, 0.08);
+            color: #d1fae5;
+        }
+
+        .status-box.warning {
+            border-color: rgba(251, 191, 36, 0.5);
+            background: rgba(234, 179, 8, 0.08);
+            color: #fef3c7;
+        }
+
+        .status-box.error {
+            border-color: rgba(248, 113, 113, 0.5);
+            background: rgba(239, 68, 68, 0.08);
+            color: #fee2e2;
+        }
+
+        .photo-wrap {
+            margin-top: 10px;
+            border: 1px dashed rgba(148, 163, 184, 0.4);
+            border-radius: 12px;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .photo-preview {
+            display: none;
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .inline-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
         }
 
         .log-item {
-            border-bottom: 1px solid var(--border-color);
-            padding: 8px 0;
-            font-size: 0.9rem;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.18);
         }
 
         .log-item:last-child {
             border-bottom: none;
+            padding-bottom: 0;
         }
 
-        .photo-preview {
-            max-width: 100%;
-            max-height: 150px;
-            margin-top: 8px;
-            border-radius: 4px;
-            display: none;
+        .log-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
         }
 
-        .status-badge {
-            font-size: 0.8rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background-color: var(--border-color);
+        .log-spot {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .log-time {
+            color: var(--muted);
+            font-size: 0.78rem;
+        }
+
+        .log-meta {
+            color: var(--text-soft);
+            font-size: 0.86rem;
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+
+        .pill {
             display: inline-block;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            color: #bae6fd;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .log-photo {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 10px;
+            margin-top: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+        }
+
+        .empty-state {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin: 0;
+            padding: 8px 0 0;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 14px;
+            }
+
+            .row,
+            .meta-grid,
+            .inline-actions {
+                display: block;
+            }
+
+            .inline-actions .btn {
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="card">
-        <h2>Геолокация и Сессия</h2>
-        <div class="form-group">
-            <button class="btn" id="btn-location" onclick="getLocation()">Зафиксировать координаты</button>
+        <div class="header-row">
+            <div class="title-wrap">
+                <div class="title-icon">📍</div>
+                <div>
+                    <h2>Геолокация и сессия</h2>
+                    <div class="subtle">Снимайте точку лова и сохраняйте данные локально</div>
+                </div>
+            </div>
         </div>
+
+        <div class="form-group">
+            <button class="btn" id="btn-location" type="button" onclick="getLocation()">Зафиксировать координаты</button>
+        </div>
+
         <div class="row">
             <div class="form-group">
-                <label>Широта</label>
+                <label for="lat">Широта</label>
                 <input type="text" id="lat" readonly placeholder="---">
             </div>
             <div class="form-group">
-                <label>Долгота</label>
+                <label for="lng">Долгота</label>
                 <input type="text" id="lng" readonly placeholder="---">
             </div>
         </div>
+
         <div class="form-group">
-            <label>Название локации / спота</label>
+            <label for="spot-name">Название локации / спота</label>
             <input type="text" id="spot-name" placeholder="Например: Скалы Ан Вьен">
         </div>
+
+        <div id="location-status" class="status-box">Готово к фиксации локации.</div>
     </div>
 
     <div class="card">
-        <h2>Регистрация Поклевки / Улова</h2>
+        <div class="header-row">
+            <div class="title-wrap">
+                <div class="title-icon">🐙</div>
+                <div>
+                    <h2>Регистрация поклевки / улова</h2>
+                </div>
+            </div>
+        </div>
+
         <form id="catch-form" onsubmit="saveCatch(event)">
             <div class="row">
                 <div class="form-group">
-                    <label>Размер EGI</label>
+                    <label for="egi-size">Размер EGI</label>
                     <select id="egi-size">
                         <option value="2.0">2.0</option>
                         <option value="2.5">2.5</option>
@@ -155,8 +379,9 @@
                         <option value="3.5">3.5</option>
                     </select>
                 </div>
+
                 <div class="form-group">
-                    <label>Тип заглубления</label>
+                    <label for="egi-type">Тип заглубления</label>
                     <select id="egi-type">
                         <option value="Shallow">Shallow</option>
                         <option value="Basic" selected>Basic</option>
@@ -167,11 +392,12 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label>Цвет / Свечение</label>
+                    <label for="egi-color">Цвет / Свечение</label>
                     <input type="text" id="egi-color" placeholder="Красный / Glow">
                 </div>
+
                 <div class="form-group">
-                    <label>Горизонт ловли</label>
+                    <label for="depth-layer">Горизонт ловли</label>
                     <select id="depth-layer">
                         <option value="Поверхность">Поверхность</option>
                         <option value="Толща">Толща</option>
@@ -182,75 +408,122 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label>Длина мантии (см)</label>
-                    <input type="number" id="mantle-length" step="0.1" placeholder="15">
+                    <label for="mantle-length">Длина мантии (см)</label>
+                    <input type="number" id="mantle-length" step="0.1" min="0" placeholder="15">
                 </div>
+
                 <div class="form-group">
-                    <label>Вес (г)</label>
-                    <input type="number" id="squid-weight" step="1" placeholder="250">
+                    <label for="squid-weight">Вес (г)</label>
+                    <input type="number" id="squid-weight" step="1" min="0" placeholder="250">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Фотография улова</label>
+                <label for="photo-input">Фотография улова</label>
                 <input type="file" id="photo-input" accept="image/*" onchange="previewPhoto(event)">
-                <img id="photo-img" class="photo-preview" alt="Превью фото">
+                <div class="photo-wrap">
+                    <img id="photo-img" class="photo-preview" alt="Превью фото улова">
+                </div>
             </div>
 
             <button type="submit" class="btn">Сохранить запись</button>
+            <div id="save-status" class="status-box">Запись будет сохранена в локальное хранилище.</div>
         </form>
     </div>
 
     <div class="card">
-        <h2>Журнал активности (Локально)</h2>
-        <div id="logs-container">
-            <p style="color: var(--text-muted); font-size: 0.9rem;">Записи отсутствуют</p>
+        <div class="header-row">
+            <div class="title-wrap">
+                <div class="title-icon">🧾</div>
+                <div>
+                    <h2>Журнал активности</h2>
+                </div>
+            </div>
         </div>
-        <button class="btn" style="background-color: #dc2626; margin-top: 12px;" onclick="clearLogs()">Очистить журнал</button>
+
+        <div id="logs-container">
+            <p class="empty-state">Записи отсутствуют</p>
+        </div>
+
+        <div class="inline-actions">
+            <button class="btn btn-secondary" type="button" onclick="exportLogs()">Экспорт JSON</button>
+            <button class="btn btn-danger" type="button" onclick="clearLogs()">Очистить журнал</button>
+        </div>
     </div>
 </div>
 
 <script>
+    const STORAGE_KEY = 'squid_tracker_logs';
     let currentPhotoBase64 = null;
+
+    function setStatus(elementId, message, type = '') {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        el.className = 'status-box';
+        if (type) {
+            el.classList.add(type);
+        }
+        el.textContent = message;
+    }
 
     function getLocation() {
         const btn = document.getElementById('btn-location');
         btn.disabled = true;
         btn.innerText = 'Получение координат...';
+        setStatus('location-status', 'Запрашиваем координаты с устройства…', 'warning');
 
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    document.getElementById('lat').value = position.coords.latitude.toFixed(6);
-                    document.getElementById('lng').value = position.coords.longitude.toFixed(6);
-                    btn.disabled = false;
-                    btn.innerText = 'Координаты обновлены';
-                },
-                (error) => {
-                    alert('Ошибка получения геолокации: ' + error.message);
-                    btn.disabled = false;
-                    btn.innerText = 'Зафиксировать координаты';
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
-        } else {
-            alert('Геолокация не поддерживается вашим браузером');
+        if (!('geolocation' in navigator)) {
+            setStatus('location-status', 'Геолокация не поддерживается этим браузером.', 'error');
             btn.disabled = false;
             btn.innerText = 'Зафиксировать координаты';
+            return;
         }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const latitude = position.coords.latitude.toFixed(6);
+                const longitude = position.coords.longitude.toFixed(6);
+                document.getElementById('lat').value = latitude;
+                document.getElementById('lng').value = longitude;
+
+                setStatus('location-status', `Координаты зафиксированы: ${latitude}, ${longitude}`, 'success');
+                btn.disabled = false;
+                btn.innerText = 'Координаты обновлены';
+            },
+            (error) => {
+                setStatus('location-status', `Ошибка геолокации: ${error.message}`, 'error');
+                btn.disabled = false;
+                btn.innerText = 'Зафиксировать координаты';
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 30000
+            }
+        );
     }
 
     function previewPhoto(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentPhotoBase64 = e.target.result;
-                const img = document.getElementById('photo-img');
-                img.src = currentPhotoBase64;
-                img.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            currentPhotoBase64 = e.target.result;
+            const img = document.getElementById('photo-img');
+            img.src = currentPhotoBase64;
+            img.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function validateCatchData(catchData) {
+        if (!catchData.spot || catchData.spot.trim() === '') {
+            throw new Error('Укажите название спота или локации.');
+        }
+
+        if (!catchData.lat || catchData.lat === 'Н/Д' || !catchData.lng || catchData.lng === 'Н/Д') {
+            throw new Error('Сначала зафиксируйте геолокацию.');
         }
     }
 
@@ -262,7 +535,7 @@
             timestamp: new Date().toLocaleString('ru-RU'),
             lat: document.getElementById('lat').value || 'Н/Д',
             lng: document.getElementById('lng').value || 'Н/Д',
-            spot: document.getElementById('spot-name').value || 'Без названия',
+            spot: (document.getElementById('spot-name').value || '').trim() || 'Без названия',
             egiSize: document.getElementById('egi-size').value,
             egiType: document.getElementById('egi-type').value,
             egiColor: document.getElementById('egi-color').value || 'Н/Д',
@@ -272,45 +545,103 @@
             photo: currentPhotoBase64
         };
 
-        let logs = JSON.parse(localStorage.getItem('squid_tracker_logs') || '[]');
+        try {
+            validateCatchData(catchData);
+        } catch (error) {
+            setStatus('save-status', error.message, 'error');
+            return;
+        }
+
+        const logs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
         logs.unshift(catchData);
-        localStorage.setItem('squid_tracker_logs', JSON.stringify(logs));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(logs));
 
         document.getElementById('catch-form').reset();
-        document.getElementById('photo-img').style.display = 'none';
+        const photoImg = document.getElementById('photo-img');
+        photoImg.src = '';
+        photoImg.style.display = 'none';
         currentPhotoBase64 = null;
 
+        setStatus('save-status', 'Запись успешно сохранена локально.', 'success');
         renderLogs();
     }
 
     function renderLogs() {
         const container = document.getElementById('logs-container');
-        const logs = JSON.parse(localStorage.getItem('squid_tracker_logs') || '[]');
+        const logs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
-        if (logs.length === 0) {
-            container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Записи отсутствуют</p>';
+        if (!logs.length) {
+            container.innerHTML = '<p class="empty-state">Записи отсутствуют</p>';
             return;
         }
 
-        container.innerHTML = logs.map(item => `
-            <div class="log-item">
-                <div><strong>${item.timestamp}</strong> — ${item.spot}</div>
-                <div style="color: var(--text-muted);">Координаты: ${item.lat}, ${item.lng}</div>
-                <div>EGI: ${item.egiSize} (${item.egiType}) | Цвет: ${item.egiColor} | Слой: ${item.depthLayer}</div>
-                <div>Мантия: ${item.mantleLength} см | Вес: ${item.weight} г</div>
-                ${item.photo ? `<img src="${item.photo}" style="max-width: 100%; max-height: 100px; margin-top: 6px; border-radius: 4px;">` : ''}
-            </div>
-        `).join('');
+        container.innerHTML = logs.map((item) => {
+            const photoMarkup = item.photo ? `<img class="log-photo" src="${item.photo}" alt="Фото улова">` : '';
+            return `
+                <div class="log-item">
+                    <div class="log-head">
+                        <div class="log-spot">${escapeHtml(item.spot)}</div>
+                        <span class="pill">${escapeHtml(item.egiSize)} / ${escapeHtml(item.egiType)}</span>
+                    </div>
+                    <div class="log-time">${escapeHtml(item.timestamp)}</div>
+                    <div class="log-meta">
+                        Координаты: ${escapeHtml(item.lat)}, ${escapeHtml(item.lng)}<br>
+                        Цвет: ${escapeHtml(item.egiColor)} | Слой: ${escapeHtml(item.depthLayer)}<br>
+                        Мантия: ${escapeHtml(item.mantleLength)} см | Вес: ${escapeHtml(item.weight)} г
+                    </div>
+                    ${photoMarkup}
+                </div>
+            `;
+        }).join('');
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function exportLogs() {
+        const logs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        if (!logs.length) {
+            setStatus('save-status', 'Нет данных для экспорта.', 'warning');
+            return;
+        }
+
+        const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'squid-tracker-export.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        setStatus('save-status', 'Экспорт JSON завершён.', 'success');
     }
 
     function clearLogs() {
+        const logs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        if (!logs.length) {
+            setStatus('save-status', 'Журнал уже пуст.', 'warning');
+            return;
+        }
+
         if (confirm('Удалить все сохраненные записи из локального хранилища?')) {
-            localStorage.removeItem('squid_tracker_logs');
+            localStorage.removeItem(STORAGE_KEY);
             renderLogs();
+            setStatus('save-status', 'Журнал очищен.', 'success');
         }
     }
 
-    window.onload = renderLogs;
+    window.onload = function () {
+        renderLogs();
+        setStatus('save-status', 'Запись будет сохранена в локальное хранилище.', '');
+    };
 </script>
 </body>
 </html>
